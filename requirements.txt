@@ -1,0 +1,6 @@
+requests==2.22.0
+pyqtspinner==0.1.1
+XlsxWriter==1.2.1
+PyQt5==5.13.1
+beautifulsoup4==4.8.0
+dataclasses==0.6
