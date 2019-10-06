@@ -38,6 +38,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.refreshButton.clicked.connect(self.refresh)
         self.exportButton.clicked.connect(self.export_table_data)
 
+        self.aboutAction.triggered.connect(self.show_about_dialog)
+
     def set_table_inactive(self):
         self.spinner.start()
 
@@ -64,15 +66,31 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         else:
             self.set_table_active()
             QErrorMessage(self).showMessage('Неизвестный формат экспорта {}'.format(export_format))
+
             return
 
         exporter.export(self.players_manager, output_filename)
 
-        self.draw_msg('Данные экспортированы в файл {}'.format(output_filename))
+        self.show_msg('Данные экспортированы в файл {}'.format(output_filename))
 
         self.set_table_active()
 
-    def draw_msg(self, text):
+    def show_about_dialog(self):
+        general_config = self.app_config.general
+
+        msg = '''
+        {} (appVersion={})
+
+        Разработана студентами группы МКС-183:
+
+        {}
+        {}
+        '''.format(general_config['appName'], general_config['appVersion'],
+            general_config['developerList'][0], general_config['developerList'][1])
+
+        self.show_msg(msg)
+
+    def show_msg(self, text):
         msg = QMessageBox(self)
         msg.setText(text)
         msg.exec()
