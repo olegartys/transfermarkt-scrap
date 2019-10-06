@@ -1,7 +1,5 @@
 from PyQt5.QtCore import Qt, QAbstractTableModel
 
-from model.players_manager import PlayersManager
-
 
 class PlayersTableModel(QAbstractTableModel):
     class TableHeader:
@@ -20,7 +18,7 @@ class PlayersTableModel(QAbstractTableModel):
         def get(index):
             return PlayersTableModel.TableHeader.headers[index]
 
-    def __init__(self, app_config, parent=None):
+    def __init__(self, app_config, players_list, parent=None):
         super(self.__class__, self).__init__(parent)
 
         self.main_window_ref = parent
@@ -32,7 +30,7 @@ class PlayersTableModel(QAbstractTableModel):
         self.readahead_row_step = config['rowCountIncStep']
         self.last_read_row = -1
 
-        self.players_list = PlayersManager(app_config)
+        self.players_list = players_list
         self.players_list.download_finished_signal.connect(self.data_ready)
 
     def rowCount(self, parent=None, *args, **kwargs):

@@ -30,6 +30,9 @@ class Ui_MainWindow(object):
         self.refreshButton.setFlat(False)
         self.refreshButton.setObjectName("refreshButton")
         self.verticalLayout.addWidget(self.refreshButton)
+        self.exportButton = QtWidgets.QPushButton(self.centralwidget)
+        self.exportButton.setObjectName("exportButton")
+        self.verticalLayout.addWidget(self.exportButton)
         spacerItem = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
         self.verticalLayout.addItem(spacerItem)
         self.exitButton = QtWidgets.QPushButton(self.centralwidget)
@@ -62,6 +65,7 @@ class Ui_MainWindow(object):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
         self.refreshButton.setText(_translate("MainWindow", "Обновить"))
+        self.exportButton.setText(_translate("MainWindow", "Экспорт"))
         self.exitButton.setText(_translate("MainWindow", "Выход"))
         self.menu.setTitle(_translate("MainWindow", "О программе"))
         self.actionFile.setText(_translate("MainWindow", "File"))

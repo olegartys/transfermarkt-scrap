@@ -102,6 +102,9 @@ class PlayersManager(QObject):
 
         return page[player_on_page_offset]
 
+    def get_all_cached_pages(self):
+        return self._page_cache.get_all()
+
     def drop_cache(self):
         self._page_cache = LRUPageCache(capacity=self._cached_page_number)
 

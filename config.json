@@ -16,6 +16,14 @@
 		"pageNumber": 50
 	},
 
+	"export_dialog": {
+		"defaultFileName": "table_export",
+		"formats": [
+			"csv",
+			"xlsx"
+		]
+	},
+
 	"general": {
 		"appName": "transfermarkt-scrap",
 		"appVersion": "0.1",
