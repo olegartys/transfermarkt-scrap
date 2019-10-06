@@ -26,6 +26,7 @@ class PlayersTableModel(QAbstractTableModel):
         config = app_config.players_table_model
 
         self.row_count = config['initRowCount']
+        self.max_row_count = config['maxRowCount']
 
         self.readahead_row_step = config['rowCountIncStep']
         self.last_read_row = -1
@@ -52,6 +53,9 @@ class PlayersTableModel(QAbstractTableModel):
         return None
 
     def canFetchMore(self, parent):
+        if self.last_read_row >= self.max_row_count:
+            return False
+
         if self.last_read_row + self.readahead_row_step > self.row_count:
             return True
 
@@ -72,6 +76,9 @@ class PlayersTableModel(QAbstractTableModel):
         if role != Qt.DisplayRole:
             return None
 
+        if index.row() > self.max_row_count:
+            return None
+
         self.last_read_row = index.row() + 1
         player_number = index.row() + 1
 
@@ -84,6 +91,14 @@ class PlayersTableModel(QAbstractTableModel):
         player = self.players_list.get_cached(player_number)
 
         return self.get_player_field_by_idx(player, index.column())
+
+    def goto_row(self, row):
+        if row < self.row_count:
+            return
+
+        self.beginInsertRows(self.index(self.row_count, 0), self.row_count, self.row_count + row)
+        self.row_count = self.row_count + row
+        self.endInsertRows()
 
     def data_ready(self, player_num_start, player_num_end):
         print("Players from {} to {} are ready".format(player_num_start, player_num_end))

@@ -1,5 +1,6 @@
 from PyQt5.QtWidgets import QHeaderView, QMainWindow, QErrorMessage, QMessageBox
 from PyQt5.QtCore import Qt
+from PyQt5.QtGui import QIntValidator
 
 from pyqtspinner.spinner import WaitingSpinner
 
@@ -21,6 +22,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         self.app_config = app_config
 
+        self.setWindowTitle(self.app_config.general['appName'])
+
         self.spinner = WaitingSpinner(self.playersTable, True, True, Qt.ApplicationModal)
 
         # setup table header so it stretches to all the width
@@ -39,6 +42,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.exportButton.clicked.connect(self.export_table_data)
 
         self.aboutAction.triggered.connect(self.show_about_dialog)
+
+        self.gotoRowOk.clicked.connect(self.scroll_to_row)
+
+        self.gotoRow.setValidator(QIntValidator(1, self.app_config.players_table_model['maxRowCount']))
 
     def set_table_inactive(self):
         self.spinner.start()
@@ -74,6 +81,15 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.show_msg('Данные экспортированы в файл {}'.format(output_filename))
 
         self.set_table_active()
+
+    def scroll_to_row(self):
+        row = int(self.gotoRow.text())
+
+        self.players_table_model.goto_row(row)
+
+        # FIXME: only after the second scroll it actually happens
+        self.playersTable.scrollTo(self.players_table_model.index(row, 0))
+        self.playersTable.scrollTo(self.players_table_model.index(row, 0))
 
     def show_about_dialog(self):
         general_config = self.app_config.general
