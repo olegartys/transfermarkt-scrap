@@ -1,0 +1,27 @@
+{
+	"transfermarkt": {
+		"baseUrl": "https://www.transfermarkt.co.uk",
+		"playersPageUrl": "/spieler-statistik/wertvollstespieler/marktwertetop",
+		"ajaxArg": "ajax=yw1",
+		"sortDescArg": "sort=marktwer",
+		"playersOnPage": 25
+	},
+
+	"players_table_model": {
+		"initRowCount": 100,
+		"rowCountIncStep": 100
+	},
+
+	"players_list_storage": {
+		"pageNumber": 50
+	},
+
+	"general": {
+		"appName": "transfermarkt-scrap",
+		"appVersion": "0.1",
+		"developerList": [
+			"Maria Sosnovskaya",
+			"Lyovin Oleg"
+		]
+	}
+}
