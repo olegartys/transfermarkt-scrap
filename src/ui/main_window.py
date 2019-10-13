@@ -128,8 +128,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         {}
         {}
-        '''.format(general_config['appName'], general_config['appVersion'],
-            general_config['developerList'][0], general_config['developerList'][1])
+        '''.format(general_config['appName'], general_config['appVersion'], general_config['developerList'][0], general_config['developerList'][1])
 
         self.show_msg(msg)
 
