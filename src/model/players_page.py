@@ -9,6 +9,11 @@ class PlayersPage:
 
     headers = {'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/47.0.2526.106 Safari/537.36'}
 
+    class SortType:
+        NONE = 0
+        ASC = 1
+        DESC = 2
+
     def __init__(self, app_config):
         ''' Constructs PlayersPage instance
 
@@ -27,7 +32,7 @@ class PlayersPage:
 
         return self._players_on_page
 
-    def download(self, page_number=1, sorted=True):
+    def download(self, page_number=1, sort_type=SortType.DESC):
         ''' Downloads and parses all the footbal players from the given page.
 
         Parameters
@@ -35,8 +40,8 @@ class PlayersPage:
             page_nubmer : int
                 number of the page to download.
 
-            sorted : bool
-                whether to download sorted data.
+            sorted : SortType
+                How to sort the data.
 
         Returns
         -------
@@ -49,8 +54,13 @@ class PlayersPage:
 
         url += '&' + 'page={}'.format(page_number)
 
-        if sorted:
+        # Append sort type
+        if sort_type == PlayersPage.SortType.DESC:
             url += '&' + self.config['sortDescArg']
+        elif sort_type == PlayersPage.SortType.ASC:
+            url += '&' + self.config['sortAscArg']
+
+        print(url)
 
         # Perform request and parse the response
         soup = self.__download_page(url)

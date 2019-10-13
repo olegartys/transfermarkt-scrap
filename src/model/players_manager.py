@@ -18,7 +18,7 @@ class PlayersManager(QObject):
         Need to migrate to QRunnable and ThreadPool instead.
         '''
 
-        def __init__(self, players_page_mgr):
+        def __init__(self, players_page_mgr, sort_type):
             ''' Constructs PlayersDownloadManager instance.
 
             Parameters
@@ -31,6 +31,7 @@ class PlayersManager(QObject):
             super(self.__class__, self).__init__()
 
             self.players_page_mgr = players_page_mgr
+            self.sort_type = sort_type
 
             self.download_requested_lock = QMutex()
             self.download_requested_cv = QWaitCondition()
@@ -60,7 +61,7 @@ class PlayersManager(QObject):
                 self.download_requested_lock.unlock()
 
                 page_number = self.page_to_download
-                page = self.players_page_mgr.download(page_number)
+                page = self.players_page_mgr.download(page_number, self.sort_type)
 
                 self.download_pending = False
 
@@ -108,16 +109,28 @@ class PlayersManager(QObject):
 
         super(self.__class__, self).__init__()
 
-        config = app_config.players_list_storage
+        config = app_config.players_manager
 
         self._cached_page_number = config['pageNumber']
+
+        # Choose default data sorting method.
+        # It will be used to generate URL when downloading
+        # pages with players info.
+        if config['sortMethod'] == 'NONE':
+            self._players_sort_method = PlayersPage.SortType.NONE
+        elif config['sortMethod'] == 'DESC':
+            self._players_sort_method = PlayersPage.SortType.DESC
+        elif config['sortMethod'] == 'ASC':
+            self._players_sort_method = PlayersPage.SortType.ASC
+        else:
+            raise Exception('Unknown sorting method {}'.format(config['sortMethod']))
 
         players_page = PlayersPage(app_config)
         self._players_on_page = players_page.players_on_page()
 
         self._page_cache = LRUPageCache(capacity=self._cached_page_number)
 
-        self._players_download_manager = self.PlayersDownloadManager(players_page)
+        self._players_download_manager = self.PlayersDownloadManager(players_page, self._players_sort_method)
         self._players_download_manager.start()
 
     def is_cached(self, player_number):

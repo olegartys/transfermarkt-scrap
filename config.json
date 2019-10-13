@@ -3,7 +3,8 @@
 		"baseUrl": "https://www.transfermarkt.co.uk",
 		"playersPageUrl": "/spieler-statistik/wertvollstespieler/marktwertetop",
 		"ajaxArg": "ajax=yw1",
-		"sortDescArg": "sort=marktwer",
+		"sortDescArg": "sort=marktwert.desc",
+		"sortAscArg": "sort=marktwert",
 		"playersOnPage": 25
 	},
 
@@ -13,8 +14,9 @@
 		"rowCountIncStep": 100
 	},
 
-	"players_list_storage": {
-		"pageNumber": 50
+	"players_manager": {
+		"pageNumber": 50,
+		"sortMethod": "DESC"
 	},
 
 	"export_dialog": {
