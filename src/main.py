@@ -10,11 +10,11 @@ from ui.main_window import MainWindow
 
 
 def main(args):
+    app = QtWidgets.QApplication(sys.argv)
+
     app_config = AppConfig(args.config_path)
 
-    app = QtWidgets.QApplication(sys.argv)
     window = MainWindow(app_config)
-
     window.show()
 
     return app.exec_()

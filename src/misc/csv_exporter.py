@@ -4,10 +4,21 @@ from model.players_table_model import PlayersTableModel
 
 
 class CsvExporter:
-    def __init__(self):
-        pass
+    '''A class is used to export football players infromation to the disk in the CSV format.'''
 
     def export(self, players_manager, output_filename):
+        ''' Exports cached data from players_manager into a output_filename file.
+
+        Parameters
+        ----------
+        players_manager : PlayersManager
+            Class that stores players information. Only cached players will be dumped
+            to the disk.
+
+        output_filename : str
+            Path to the file where to store players information.
+        '''
+
         with open(output_filename, 'w') as csv_file:
             table_header = PlayersTableModel.TableHeader.headers
 

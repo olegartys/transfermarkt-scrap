@@ -15,7 +15,17 @@ from misc.xlsx_exporter import XlsxExporter
 
 
 class MainWindow(QMainWindow, Ui_MainWindow):
+    ''' The main application window. '''
+
     def __init__(self, app_config):
+        ''' Constructs new MainWindow istance.
+
+        Parameters
+        ----------
+            app_config : AppConfig
+                Instance of application config.
+        '''
+
         super(self.__class__, self).__init__()
 
         self.setupUi(self)
@@ -48,16 +58,29 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.gotoRow.setValidator(QIntValidator(1, self.app_config.players_table_model['maxRowCount']))
 
     def set_table_inactive(self):
+        ''' Set the table view state to inactive. '''
+
         self.spinner.start()
 
     def set_table_active(self):
+        ''' Set the table view state to active. '''
+
         self.spinner.stop()
 
     def refresh(self):
+        ''' Callback called on 'refresh' button clicked.
+        Drops the model internal cache and scroll to the top of the table.
+        '''
+
         self.players_table_model.drop_data()
         self.playersTable.scrollToTop()
 
     def export_table_data(self):
+        ''' Callback called on 'export' button clicked.
+        Draw export dialog window, read params and dump the data on disk
+        using the particular exporter.
+        '''
+
         self.set_table_inactive()
 
         export_format, output_filename = ExportDialogWindow(self.app_config).get_export_params()
@@ -83,6 +106,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.set_table_active()
 
     def scroll_to_row(self):
+        ''' Callback called to scroll the table view to a particular row. '''
+
         row = int(self.gotoRow.text())
 
         self.players_table_model.goto_row(row)
@@ -92,6 +117,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.playersTable.scrollTo(self.players_table_model.index(row, 0))
 
     def show_about_dialog(self):
+        ''' Callback called to draw 'about' dialog. '''
+
         general_config = self.app_config.general
 
         msg = '''
@@ -107,6 +134,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.show_msg(msg)
 
     def show_msg(self, text):
+        ''' Helper method to show Qt message box. '''
+
         msg = QMessageBox(self)
         msg.setText(text)
         msg.exec()

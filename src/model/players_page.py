@@ -5,17 +5,45 @@ from model.player import Player
 
 
 class PlayersPage:
+    ''' This class manages one page with footbal players from transfermarkt.com '''
+
     headers = {'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/47.0.2526.106 Safari/537.36'}
 
     def __init__(self, app_config):
+        ''' Constructs PlayersPage instance
+
+        Parameters
+        ----------
+            app_config : AppConfig
+                Instance of application configuration file.
+        '''
+
         self.config = app_config.transfermarkt
         self.url = self.config['baseUrl'] + self.config['playersPageUrl']
         self._players_on_page = self.config['playersOnPage']
 
     def players_on_page(self):
+        ''' Returns number of players on the page. '''
+
         return self._players_on_page
 
     def download(self, page_number=1, sorted=True):
+        ''' Downloads and parses all the footbal players from the given page.
+
+        Parameters
+        ----------
+            page_nubmer : int
+                number of the page to download.
+
+            sorted : bool
+                whether to download sorted data.
+
+        Returns
+        -------
+            List of the Player instances parsed from downloaded page.
+
+        '''
+
         # Generate URL accordgin to the input arguments
         url = self.url + '?' + self.config['ajaxArg']
 
@@ -43,6 +71,8 @@ class PlayersPage:
         return player_list
 
     def __download_page(self, url):
+        ''' [Private] Internal helper for serialize page using bs. '''
+
         tree = requests.get(url, headers=self.headers)
         soup = BeautifulSoup(tree.content, 'html.parser')
 

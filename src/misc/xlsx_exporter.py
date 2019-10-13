@@ -4,26 +4,35 @@ from model.players_table_model import PlayersTableModel
 
 
 class XlsxExporter:
-    def __init__(self):
-        pass
+    '''A class is used to export football players infromation to the disk in the XLSX format.'''
 
     def export(self, players_manager, output_filename):
+        ''' Exports cached data from players_manager into a output_filename file.
+
+        Parameters
+        ----------
+        players_manager : PlayersManager
+            Class that stores players information. Only cached players will be dumped
+            to the disk.
+
+        output_filename : str
+            Path to the file where to store players information.
+        '''
+
         table_header = PlayersTableModel.TableHeader.headers
 
         workbook = xlsxwriter.Workbook(output_filename)
         worksheet = workbook.add_worksheet()
 
         # write header
-        row = 0
         col = 0
 
         for head in table_header:
-            worksheet.write(row, col, head)
+            worksheet.write(0, col, head)
             col += 1
 
         # write players data
         row = 0
-        col = 0
 
         for page in players_manager.get_all_cached_pages().values():
             for player in page:
