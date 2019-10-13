@@ -7,6 +7,7 @@ from pyqtspinner.spinner import WaitingSpinner
 from ui.main_window_ui import Ui_MainWindow
 from ui.export_dialog import ExportDialogWindow
 
+from model.players_page import PlayersPage
 from model.players_manager import PlayersManager
 from model.players_table_model import PlayersTableModel
 
@@ -56,6 +57,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.gotoRowOk.clicked.connect(self.scroll_to_row)
 
         self.gotoRow.setValidator(QIntValidator(1, self.app_config.players_table_model['maxRowCount']))
+
+        self.set_most_less_expensive_players()
 
     def set_table_inactive(self):
         ''' Set the table view state to inactive. '''
@@ -131,6 +134,19 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         '''.format(general_config['appName'], general_config['appVersion'], general_config['developerList'][0], general_config['developerList'][1])
 
         self.show_msg(msg)
+
+    def set_most_less_expensive_players(self):
+        ''' Sets the labels with most expensive and less expensive players.
+        Calls download in main thread.
+        '''
+
+        players_page = PlayersPage(self.app_config)
+
+        most_expensive = players_page.download(1, PlayersPage.SortType.DESC)[0]
+        less_expensive = players_page.download(1, PlayersPage.SortType.ASC)[0]
+
+        self.mostExpensivePlayer.setText('{} ({})'.format(most_expensive.name, most_expensive.price))
+        self.lessExpensivePlayer.setText('{} ({})'.format(less_expensive.name, less_expensive.price))
 
     def show_msg(self, text):
         ''' Helper method to show Qt message box. '''

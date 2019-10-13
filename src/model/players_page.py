@@ -60,8 +60,6 @@ class PlayersPage:
         elif sort_type == PlayersPage.SortType.ASC:
             url += '&' + self.config['sortAscArg']
 
-        print(url)
-
         # Perform request and parse the response
         soup = self.__download_page(url)
         player_items = soup.findAll('tr', {'class': ['even', 'odd']})
