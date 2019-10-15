@@ -19,7 +19,7 @@ class CsvExporter:
             Path to the file where to store players information.
         '''
 
-        with open(output_filename, 'w') as csv_file:
+        with open(output_filename, 'w', encoding='utf-8') as csv_file:
             table_header = PlayersTableModel.TableHeader.headers
 
             csv_writer = csv.DictWriter(csv_file, fieldnames=table_header, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
